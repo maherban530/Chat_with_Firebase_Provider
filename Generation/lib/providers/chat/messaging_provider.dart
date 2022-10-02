@@ -149,7 +149,8 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
 
         if (_docData.isNotEmpty) {
           setCurrStatus(DataManagement.fromJsonString(
-                  Secure.decode(_docData[DBPath.status])) ??
+                  _docData[DBPath.status]) ??
+                                    // Secure.decode(_docData[DBPath.status])) ??
               {});
 
           _localStorage.insertUpdateConnectionPrimaryData(
@@ -197,7 +198,8 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
   }
 
   setToken(String token) {
-    _connToken = Secure.decode(token);
+    _connToken = token;
+        // _connToken = Secure.decode(token);
     notifyListeners();
   }
 

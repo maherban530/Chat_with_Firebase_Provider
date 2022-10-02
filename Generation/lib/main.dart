@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DataManagement.loadEnvData();
+  // await DataManagement.loadEnvData();
   _initializeFirebase();
 
   runApp(const GenerationEntry());

@@ -341,8 +341,10 @@ _deleteEligibleActivities(
     required String tableName,
     required bool ownActivity}) async {
   try {
-  final _date = Secure.decode(activity["date"]);
-  final _time = Secure.decode(activity["time"]);
+  final _date = activity["date"];
+  final _time = activity["time"];
+  // final _date = Secure.decode(activity["date"]);
+  // final _time = Secure.decode(activity["time"]);
   final LocalStorage _localStorage = LocalStorage();
 
   DateFormat format = DateFormat("dd MMMM, yyyy hh:mm a");
@@ -354,14 +356,17 @@ _deleteEligibleActivities(
       final _done = await _ownActivityRemoteDataDeletion(activity: activity);
       if (!_done) return;
     }
-
-    if (Secure.decode(activity["type"]) !=
+    // if (Secure.decode(activity["type"]) !=
+    if (activity["type"] !=
         ActivityContentType.text.toString()) {
-      await SystemFileManagement.deleteFile(Secure.decode(activity['message']));
-      if (Secure.decode(activity['type']) ==
+      await SystemFileManagement.deleteFile(activity['message']);
+            // await SystemFileManagement.deleteFile(Secure.decode(activity['message']));
+            // if (Secure.decode(activity['type']) ==
+      if (activity['type'] ==
           ActivityContentType.video.toString()) {
         final _additionalDataString =
-            Secure.decode(activity["additionalThings"]);
+            activity["additionalThings"];
+            // Secure.decode(activity["additionalThings"]);
 
         final _additionalData =
             DataManagement.fromJsonString(_additionalDataString.toString());
@@ -384,15 +389,17 @@ _deleteEligibleActivities(
 Future<bool> _ownActivityRemoteDataDeletion({required activity}) async {
   final DBOperations _dbOperations = DBOperations();
 
-  final _additionalThings = Secure.decode(activity["additionalThings"]);
+  final _additionalThings = activity["additionalThings"];
+  // final _additionalThings = Secure.decode(activity["additionalThings"]);
 
   final _remoteDataEncrypted =
       DataManagement.fromJsonString(_additionalThings.toString())["remoteData"];
-  final _remoteDataDecrypted = Secure.decode(_remoteDataEncrypted);
+  final _remoteDataDecrypted = _remoteDataEncrypted;
+  // final _remoteDataDecrypted = Secure.decode(_remoteDataEncrypted);
 
   await _dbOperations.initializeFirebase();
-
-  if (Secure.decode(activity["type"]) != ActivityContentType.text.toString()) {
+  // if (Secure.decode(activity["type"]) != ActivityContentType.text.toString()) {
+  if (activity["type"] != ActivityContentType.text.toString()) {
     final _data = await _dbOperations.deleteMediaFromFirebaseStorage(
         DataManagement.fromJsonString(_remoteDataDecrypted)['message']);
 

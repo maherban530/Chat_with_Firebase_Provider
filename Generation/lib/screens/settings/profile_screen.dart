@@ -41,8 +41,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (mounted) {
       setState(() {
         _currAccData.forEach((key, value) {
-          _actualProfileData[key] = Secure.decode(value);
-          _editableProfileData[key] = Secure.decode(value);
+          _actualProfileData[key] = value;
+          // Secure.decode(value);
+          _editableProfileData[key] = value;
+          // Secure.decode(value);
         });
         _isLoading = false;
       });
@@ -460,10 +462,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       await _localStorage.insertUpdateDataCurrAccData(
           currUserId: _updatedData["id"],
-          currUserName: Secure.encode(_updatedData["name"]) ?? '',
-          currUserProfilePic: Secure.encode(_updatedData["profilePic"]) ?? '',
-          currUserAbout: Secure.encode(_updatedData["about"]) ?? '',
-          currUserEmail: Secure.encode(_editableProfileData["email"]) ?? '',
+          currUserName: _updatedData["name"] ?? '',
+          currUserProfilePic: _updatedData["profilePic"] ?? '',
+          currUserAbout: _updatedData["about"] ?? '',
+          currUserEmail: _editableProfileData["email"] ?? '',
+          // currUserName: Secure.encode(_updatedData["name"]) ?? '',
+          // currUserProfilePic: Secure.encode(_updatedData["profilePic"]) ?? '',
+          // currUserAbout: Secure.encode(_updatedData["about"]) ?? '',
+          // currUserEmail: Secure.encode(_editableProfileData["email"]) ?? '',
           dbOperation: DBOperation.update);
     }
 

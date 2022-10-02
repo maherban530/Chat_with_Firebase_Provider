@@ -210,7 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<ConnectionCollectionProvider>(context).getUsersMap(_connId);
 
     final _isDarkMode = Provider.of<ThemeProvider>(context).isDarkTheme();
-    final _connName = Secure.decode(_currentActivityData["name"]);
+    // final _connName = Secure.decode(_currentActivityData["name"]);
+    final _connName = _currentActivityData["name"];
 
     return Container(
       margin: const EdgeInsets.only(right: 10),
@@ -232,7 +233,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(100),
                 image: DecorationImage(
                     image: NetworkImage(
-                        Secure.decode(_currentActivityData["profilePic"])),
+                        _currentActivityData["profilePic"]),
+                        // Secure.decode(_currentActivityData["profilePic"])),
                     fit: BoxFit.cover),
                 border: Border.all(
                     color: _isDarkMode
@@ -326,15 +328,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 onLongPress: () =>
                     _onChatLongPressed(_connectionData, connectionIndex),
                 child: _commonChatLayout.particularChatConnection(
-                    photo: Secure.decode(_connectionData["profilePic"]),
-                    heading: Secure.decode(_connectionData["name"]),
+                    photo: _connectionData["profilePic"],
+                    heading: _connectionData["name"],
                     subheading: _getSubHeading(
                         _lastMsgData,
-                        Secure.decode(_connectionData["name"])
+                        _connectionData["name"]
                             .toString()
                             .split(' ')
                             .first),
-                    lastMsgTime: Secure.decode(_lastMsgData?["time"]),
+                    lastMsgTime: _lastMsgData?["time"],
+
+                    // lastMsgTime: Secure.decode(_lastMsgData?["time"]),
+                    //  photo: Secure.decode(_connectionData["profilePic"]),
+                    // heading: Secure.decode(_connectionData["name"]),
+                    // subheading: _getSubHeading(
+                    //     _lastMsgData,
+                    //     Secure.decode(_connectionData["name"])
+                    //         .toString()
+                    //         .split(' ')
+                    //         .first),
+                    // lastMsgTime: Secure.decode(_lastMsgData?["time"]),
                     currentIndex: connectionIndex,
                     totalPendingMessages: _connectionData["notSeenMsgCount"],
                     bottomMargin:
@@ -400,7 +413,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final _currentActivityData =
         Provider.of<StatusCollectionProvider>(context).getCurrentAccData();
     final _isDarkMode = Provider.of<ThemeProvider>(context).isDarkTheme();
-    final _connName = Secure.decode(_currentActivityData["name"]);
+    final _connName = _currentActivityData["name"];
+    // final _connName = Secure.decode(_currentActivityData["name"]);
 
     _addActivityIcon() {
       return InkWell(
@@ -449,7 +463,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 3),
                     image: DecorationImage(
                         image: NetworkImage(
-                            Secure.decode(_currentActivityData["profilePic"])),
+                           _currentActivityData["profilePic"]),
+                                                        // Secure.decode(_currentActivityData["profilePic"])),
+
                         fit: BoxFit.cover)),
                 child: _addActivityIcon()),
             Container(
@@ -605,34 +621,41 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _getSubHeading(_lastMsgData, String connFirstName) {
-    final _msgData = Secure.decode(_lastMsgData?["message"]);
-    var _msgHolder = Secure.decode(_lastMsgData?['holder']);
+    final _msgData = _lastMsgData?["message"];
+    var _msgHolder = _lastMsgData?['holder'];
+    //  final _msgData = Secure.decode(_lastMsgData?["message"]);
+    // var _msgHolder = Secure.decode(_lastMsgData?['holder']);
     _msgHolder =
         _msgHolder == MessageHolderType.other.toString() ? connFirstName : 'Me';
 
     if (_msgData == '') return '';
-
-    if (Secure.decode(_lastMsgData["type"]) ==
+    // if (Secure.decode(_lastMsgData["type"]) ==
+    if (_lastMsgData["type"] ==
         ChatMessageType.image.toString()) {
       return '$_msgHolder:  📷 Image';
     }
-    if (Secure.decode(_lastMsgData["type"]) ==
+        // if (Secure.decode(_lastMsgData["type"]) ==
+    if (_lastMsgData["type"] ==
         ChatMessageType.video.toString()) {
       return '$_msgHolder:  📽️ Video';
     }
-    if (Secure.decode(_lastMsgData["type"]) ==
+        // if (Secure.decode(_lastMsgData["type"]) ==
+    if (_lastMsgData["type"] ==
         ChatMessageType.location.toString()) {
       return '$_msgHolder:  🗺️ Location';
     }
-    if (Secure.decode(_lastMsgData["type"]) ==
+        // if (Secure.decode(_lastMsgData["type"]) ==
+    if (_lastMsgData["type"] ==
         ChatMessageType.audio.toString()) {
       return '$_msgHolder:  🎵 Audio';
     }
-    if (Secure.decode(_lastMsgData["type"]) ==
+        // if (Secure.decode(_lastMsgData["type"]) ==
+    if (_lastMsgData["type"] ==
         ChatMessageType.document.toString()) {
       return '$_msgHolder:  📃 Document';
     }
-    if (Secure.decode(_lastMsgData["type"]) ==
+        // if (Secure.decode(_lastMsgData["type"]) ==
+    if (_lastMsgData["type"] ==
         ChatMessageType.contact.toString()) {
       return '$_msgHolder:  💁 Contact';
     }

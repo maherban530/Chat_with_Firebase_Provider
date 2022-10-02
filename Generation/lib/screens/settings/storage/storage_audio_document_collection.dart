@@ -61,7 +61,9 @@ class StorageAudioAndDocumentCollectionScreen extends StatelessWidget {
         : Provider.of<StorageProvider>(context).getDocumentCollection()[index]
             ['message'];
 
-    _audioDocFile = Secure.decode(_audioDocFile);
+    _audioDocFile = _audioDocFile;
+        // _audioDocFile = Secure.decode(_audioDocFile);
+
 
     final _isDarkMode = Provider.of<ThemeProvider>(context).isDarkTheme();
 

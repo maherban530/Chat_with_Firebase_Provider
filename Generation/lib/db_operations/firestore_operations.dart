@@ -420,7 +420,8 @@ class DBOperations {
               '${DBPath.userCollection}/$partnerId/${DBPath.userConnections}/$currUid/${DBPath.contents}/${DBPath.messages}')
           .set({
         DBPath.data: FieldValue.arrayUnion(
-            [Secure.encode(DataManagement.toJsonString(msgData))])
+            [DataManagement.toJsonString(msgData)])
+                        // [Secure.encode(DataManagement.toJsonString(msgData))])
       }, SetOptions(merge: true));
 
       if (isNotificationPermitted) {
@@ -475,12 +476,14 @@ class DBOperations {
 
   updateActiveStatus(Map<String, dynamic> status) async {
     final _data = {
-      DBPath.status: Secure.encode(DataManagement.toJsonString(status))
+      DBPath.status: DataManagement.toJsonString(status)
+            // DBPath.status: Secure.encode(DataManagement.toJsonString(status))
     };
 
     if (status["status"] == UserStatus.online.toString()) {
       final _getToken = await _fToken();
-      _data[DBPath.token] = Secure.encode(_getToken);
+      _data[DBPath.token] = _getToken;
+            // _data[DBPath.token] = Secure.encode(_getToken);
     }
 
     await _getInstance.doc('${DBPath.userCollection}/$currUid').update(_data);
@@ -488,15 +491,19 @@ class DBOperations {
 
   updateNotificationStatus(bool updatedNotification) async {
     await _getInstance.doc('${DBPath.userCollection}/$currUid').update(
-        {DBPath.notification: Secure.encode(updatedNotification.toString())});
+        {DBPath.notification: updatedNotification.toString()});
+                // {DBPath.notification: Secure.encode(updatedNotification.toString())});
   }
 
   updateParticularConnectionNotificationStatus(
       String connId, bool updatedNotification) async {
     await _getInstance.doc('${DBPath.userCollection}/$currUid').update({
       DBPath.notificationDeactivated: updatedNotification
-          ? FieldValue.arrayUnion([Secure.encode(connId)])
-          : FieldValue.arrayRemove([Secure.encode(connId)])
+          ? FieldValue.arrayUnion([connId])
+          : FieldValue.arrayRemove([connId])
+          // DBPath.notificationDeactivated: updatedNotification
+          // ? FieldValue.arrayUnion([Secure.encode(connId)])
+          // : FieldValue.arrayRemove([Secure.encode(connId)])
     });
   }
 
@@ -509,7 +516,8 @@ class DBOperations {
     final _getToken = await _fToken();
     await _getInstance
         .doc('${DBPath.userCollection}/$currUid')
-        .update({DBPath.token: Secure.encode(_getToken)});
+        .update({DBPath.token: _getToken});
+                // .update({DBPath.token: Secure.encode(_getToken)});
   }
 
   resetRemoveSpecialRequest() {
@@ -533,10 +541,12 @@ class DBOperations {
             '${DBPath.userCollection}/$currUid/${DBPath.activities}/${DBPath.data}')
         .set({
       DBPath.data: FieldValue.arrayUnion(
-          [Secure.encode(DataManagement.toJsonString(data))]),
+          [DataManagement.toJsonString(data)]),
+                    // [Secure.encode(DataManagement.toJsonString(data))]),
     }, SetOptions(merge: true));
 
-    return Secure.encode(DataManagement.toJsonString(data));
+    return DataManagement.toJsonString(data);
+        // return Secure.encode(DataManagement.toJsonString(data));
   }
 
   Future<bool> deleteParticularActivity(data) async {

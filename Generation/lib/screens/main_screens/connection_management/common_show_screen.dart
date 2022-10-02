@@ -158,9 +158,12 @@ class _CommonUsersShowScreenState extends State<CommonUsersShowScreen> {
 
       return _commonChatLayout.particularChatConnection(
         currentIndex: availableIndex,
-        photo: Secure.decode(_particularData["profilePic"]),
-        heading: Secure.decode(_particularData["name"]),
-        subheading: Secure.decode(_particularData["about"]),
+        photo: _particularData["profilePic"],
+        heading: _particularData["name"],
+        subheading: _particularData["about"],
+        //   photo: Secure.decode(_particularData["profilePic"]),
+        // heading: Secure.decode(_particularData["name"]),
+        // subheading: Secure.decode(_particularData["about"]),
         lastMsgTime: null,
         totalPendingMessages: null,
         trailingWidget: connectButton(_particularData, availableIndex),
@@ -172,9 +175,12 @@ class _CommonUsersShowScreenState extends State<CommonUsersShowScreen> {
 
       return _commonChatLayout.particularChatConnection(
           currentIndex: availableIndex,
-          photo: Secure.decode(_particularData["profilePic"]),
-          heading: Secure.decode(_particularData["name"]),
-          subheading: Secure.decode(_particularData["about"]),
+          photo: _particularData["profilePic"],
+          heading: _particularData["name"],
+          subheading: _particularData["about"],
+          //  photo: Secure.decode(_particularData["profilePic"]),
+          // heading: Secure.decode(_particularData["name"]),
+          // subheading: Secure.decode(_particularData["about"]),
           lastMsgTime: null,
           totalPendingMessages: null,
           middleWidth: MediaQuery.of(context).size.width - 240,
@@ -187,9 +193,12 @@ class _CommonUsersShowScreenState extends State<CommonUsersShowScreen> {
 
       return _commonChatLayout.particularChatConnection(
           currentIndex: availableIndex,
-          photo: Secure.decode(_particularData["profilePic"]),
-          heading: Secure.decode(_particularData["name"]),
-          subheading: Secure.decode(_particularData["about"]),
+          photo: _particularData["profilePic"],
+          heading: _particularData["name"],
+          subheading: _particularData["about"],
+          //  photo: Secure.decode(_particularData["profilePic"]),
+          // heading: Secure.decode(_particularData["name"]),
+          // subheading: Secure.decode(_particularData["about"]),
           lastMsgTime: null,
           totalPendingMessages: null,
           trailingWidget: withdrawButton(_particularData, availableIndex));
@@ -309,8 +318,10 @@ class _CommonUsersShowScreenState extends State<CommonUsersShowScreen> {
       }
 
       _sendModifiedNotification(
-          Secure.decode(otherUserData['token']),
-          '${Secure.decode(_currAccData['name'])} sent you a connection request',
+          otherUserData['token'],
+          '${_currAccData['name']} sent you a connection request',
+          //   Secure.decode(otherUserData['token']),
+          // '${Secure.decode(_currAccData['name'])} sent you a connection request',
           'I would like to connect with you',
           otherUserData);
     } else {
@@ -376,8 +387,10 @@ class _CommonUsersShowScreenState extends State<CommonUsersShowScreen> {
       }
 
       _sendModifiedNotification(
-          Secure.decode(otherUserData['token']),
-          '${Secure.decode(_currAccData['name'])} accepted your connection request',
+          otherUserData['token'],
+          '${_currAccData['name']} accepted your connection request',
+          //   Secure.decode(otherUserData['token']),
+          // '${Secure.decode(_currAccData['name'])} accepted your connection request',
           "Let's talk with each other",
           otherUserData);
     } else {
@@ -416,7 +429,8 @@ class _CommonUsersShowScreenState extends State<CommonUsersShowScreen> {
   void _sendModifiedNotification(token, title, body, otherUserData) {
     bool _notificationPermitted = true;
     if (otherUserData[DBPath.notification] != null &&
-        Secure.decode(otherUserData[DBPath.notification]) == 'false') {
+            // Secure.decode(otherUserData[DBPath.notification]) == 'false') {
+        otherUserData[DBPath.notification] == 'false') {
       _notificationPermitted = false;
     }
 

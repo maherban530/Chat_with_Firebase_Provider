@@ -184,7 +184,8 @@ class ConnectionCollectionProvider extends ChangeNotifier {
         final _remoteLatestMsg = _incomingMessagesCollection.isEmpty
             ? <String, dynamic>{}
             : DataManagement.fromJsonString(
-                    Secure.decode(_incomingMessagesCollection.last))
+                    _incomingMessagesCollection.last)
+                                        // Secure.decode(_incomingMessagesCollection.last))
                 .values
                 .toList()
                 .first;
@@ -220,7 +221,8 @@ class ConnectionCollectionProvider extends ChangeNotifier {
     debugShow('Activity Collection length: ${activityCollection.length}');
 
     for (var activity in activityCollection) {
-      activity = DataManagement.fromJsonString(Secure.decode(activity));
+      activity = DataManagement.fromJsonString(activity);
+            // activity = DataManagement.fromJsonString(Secure.decode(activity));
       final _oldParticularData = await _localStorage.getParticularActivity(
           tableName:
               DataManagement.generateTableNameForNewConnectionActivity(connId),
@@ -283,13 +285,20 @@ class ConnectionCollectionProvider extends ChangeNotifier {
         tableName:
             DataManagement.generateTableNameForNewConnectionActivity(connId),
         activityId: activity["id"],
-        activityHolderId: Secure.encode(activity["holderId"]) ?? '',
-        activityType: Secure.encode(activity['type']) ?? '',
-        date: Secure.encode(activity['date']) ?? '',
-        time: Secure.encode(activity['time']) ?? '',
-        msg: Secure.encode(activity['message']) ?? '',
-        additionalData: Secure.encode(
-            DataManagement.toJsonString(activity["additionalThings"])),
+        //  activityHolderId: Secure.encode(activity["holderId"]) ?? '',
+        // activityType: Secure.encode(activity['type']) ?? '',
+        // date: Secure.encode(activity['date']) ?? '',
+        // time: Secure.encode(activity['time']) ?? '',
+        // msg: Secure.encode(activity['message']) ?? '',
+        // additionalData: Secure.encode(
+
+        activityHolderId: activity["holderId"] ?? '',
+        activityType: activity['type'] ?? '',
+        date: activity['date'] ?? '',
+        time: activity['time'] ?? '',
+        msg: activity['message'] ?? '',
+        additionalData: 
+            DataManagement.toJsonString(activity["additionalThings"]),
         dbOperation: insert ? DBOperation.insert : DBOperation.update);
   }
 
@@ -400,7 +409,8 @@ class ConnectionCollectionProvider extends ChangeNotifier {
     }
 
     for (final connection in _chatConnectionsDataCollection) {
-      if (Secure.decode(connection["name"])
+        // if (Secure.decode(connection["name"])
+      if (connection["name"]
           .toString()
           .toLowerCase()
           .contains(searchKeyword.toString().toLowerCase())) {
@@ -433,13 +443,15 @@ class ConnectionCollectionProvider extends ChangeNotifier {
           _localConnectedUsersMap[connId][DBPath.notificationDeactivated];
       if (_notificationDeactivatedList == null) return true;
       return !(_notificationDeactivatedList
-          .contains(Secure.encode(_dbOperations.currUid)));
+          .contains(_dbOperations.currUid));
+                    // .contains(Secure.encode(_dbOperations.currUid)));
     }
 
     if (_localConnectedUsersMap[connId][DBPath.notification] == null) {
       return _checkInNotificationDeactivatedList();
     } else {
-      if (Secure.decode(_localConnectedUsersMap[connId][DBPath.notification]) ==
+            // if (Secure.decode(_localConnectedUsersMap[connId][DBPath.notification]) ==
+      if (_localConnectedUsersMap[connId][DBPath.notification] ==
           'false') {
         return false;
       } else {

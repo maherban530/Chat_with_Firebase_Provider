@@ -134,8 +134,10 @@ class _CommonSelectionScreenState extends State<CommonSelectionScreen> {
           child: _commonChatLayout.particularChatConnection(
               commonRequirement: widget.commonRequirement,
               connectionData: _connectionData,
-              photo: Secure.decode(_connectionData["profilePic"]),
-              heading: Secure.decode(_connectionData["name"]),
+              photo: _connectionData["profilePic"],
+              heading: _connectionData["name"],
+              // photo: Secure.decode(_connectionData["profilePic"]),
+              // heading: Secure.decode(_connectionData["name"]),
               subheading: '',
               lastMsgTime: '',
               currentIndex: connectionIndex,
@@ -263,12 +265,16 @@ class _CommonSelectionScreenState extends State<CommonSelectionScreen> {
     final _chatHistoryData =
         await Provider.of<ChatBoxMessagingProvider>(context, listen: false)
             .getChatHistory(
-                connectionData["id"], Secure.decode(connectionData["name"]));
+                connectionData["id"], connectionData["name"]);
+                                // connectionData["id"], Secure.decode(connectionData["name"]));
+
 
     final _chatHistoryStoreDir = await createChatHistoryStoreDir();
     final _chatHistoryStoreFile = File(createChatHistoryFile(
         dirPath: _chatHistoryStoreDir,
-        connName: Secure.decode(connectionData["name"]),
+        connName: connectionData["name"],
+                // connName: Secure.decode(connectionData["name"]),
+
         connId: connectionData["id"]));
 
     String _historyTextData = """""";

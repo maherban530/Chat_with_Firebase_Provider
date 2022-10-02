@@ -121,13 +121,20 @@ class ActivityProvider extends ChangeNotifier {
             : DataManagement.generateTableNameForNewConnectionActivity(
                 holderId),
         activityId: map["id"],
-        activityHolderId: Secure.encode(map["holderId"]) ?? '',
-        activityType: Secure.encode(map["type"]) ?? '',
-        date: Secure.encode(map["date"]) ?? '',
-        time: Secure.encode(map["time"]) ?? '',
-        msg: Secure.encode(map["message"]) ?? '',
-        additionalData: Secure.encode(
-                DataManagement.toJsonString(map["additionalThings"])) ??
+        //  activityHolderId: Secure.encode(map["holderId"]) ?? '',
+        // activityType: Secure.encode(map["type"]) ?? '',
+        // date: Secure.encode(map["date"]) ?? '',
+        // time: Secure.encode(map["time"]) ?? '',
+        // msg: Secure.encode(map["message"]) ?? '',
+        // additionalData: Secure.encode(
+
+        activityHolderId: map["holderId"] ?? '',
+        activityType: map["type"] ?? '',
+        date: map["date"] ?? '',
+        time: map["time"] ?? '',
+        msg: map["message"] ?? '',
+        additionalData: 
+                DataManagement.toJsonString(map["additionalThings"]) ??
             '',
         dbOperation: DBOperation.insert);
   }
@@ -183,12 +190,19 @@ class ActivityProvider extends ChangeNotifier {
 
     final _activityData = _activityCollection[index];
     return ActivityModel.getDecodedJson(
-        type: Secure.decode(_activityData["type"]),
-        holderId: Secure.decode(_activityData["holderId"]),
-        date: Secure.decode(_activityData["date"]),
-        time: Secure.decode(_activityData["time"]),
-        message: Secure.decode(_activityData["message"]),
-        additionalThings: Secure.decode(_activityData["additionalThings"]),
+      //  type: Secure.decode(_activityData["type"]),
+      //   holderId: Secure.decode(_activityData["holderId"]),
+      //   date: Secure.decode(_activityData["date"]),
+      //   time: Secure.decode(_activityData["time"]),
+      //   message: Secure.decode(_activityData["message"]),
+      //   additionalThings: Secure.decode(_activityData["additionalThings"]),
+
+        type: _activityData["type"],
+        holderId: _activityData["holderId"],
+        date: _activityData["date"],
+        time: _activityData["time"],
+        message: _activityData["message"],
+        additionalThings: _activityData["additionalThings"],
         id: _activityData["id"]);
   }
 

@@ -39,17 +39,24 @@ class ChatMessageModel {
       required String time,
       required String holder,
       required dynamic additionalData}) {
-    dynamic _decodedAdditionalData = Secure.decode(additionalData);
+    // dynamic _decodedAdditionalData = Secure.decode(additionalData);
+    dynamic _decodedAdditionalData = additionalData;
     if(_decodedAdditionalData != ''){
       _decodedAdditionalData = DataManagement.fromJsonString(_decodedAdditionalData);
     }
 
     return ChatMessageModel(
-        Secure.decode(type),
-        Secure.decode(message),
-        Secure.decode(time),
-        Secure.decode(holder),
+        type,
+        message,
+        time,
+        holder,
         _decodedAdditionalData == '' ? null : _decodedAdditionalData,
-        Secure.decode(date));
+        date);
+        // Secure.decode(type),
+        // Secure.decode(message),
+        // Secure.decode(time),
+        // Secure.decode(holder),
+        // _decodedAdditionalData == '' ? null : _decodedAdditionalData,
+        // Secure.decode(date));
   }
 }

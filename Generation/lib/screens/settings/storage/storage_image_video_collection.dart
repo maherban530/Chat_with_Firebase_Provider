@@ -76,14 +76,17 @@ class StorageImageAndVideoCollection extends StatelessWidget {
 
     _onTapped() async {
       if (showVideoPlayIcon) {
-        await SystemFileManagement.openFile(Secure.decode(_extractedData['message']));
+        await SystemFileManagement.openFile(_extractedData['message']);
+                // await SystemFileManagement.openFile(Secure.decode(_extractedData['message']));
+
       } else {
         makeStatusBarTransparent();
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (_) => ImageShowingScreen(
-                      imgPath: Secure.decode(_extractedData['message']),
+                      imgPath: _extractedData['message'],
+                                            // imgPath: Secure.decode(_extractedData['message']),
                       imageType: ImageType.file,
                     ))).then((value) => showStatusAndNavigationBar());
       }
@@ -95,8 +98,11 @@ class StorageImageAndVideoCollection extends StatelessWidget {
         children: [
           _onlyImageSection(showVideoPlayIcon
               ? DataManagement.fromJsonString(
-                  Secure.decode(_extractedData['additionalData']))['thumbnail']
-              : Secure.decode(_extractedData['message'])),
+                  _extractedData['additionalData'])['thumbnail']
+                                    // Secure.decode(_extractedData['additionalData']))['thumbnail']
+
+              : _extractedData['message']),
+              // Secure.decode(_extractedData['message'])),
           if (showVideoPlayIcon)
             _forShowingVideoFile(_extractedData['message']),
         ],
@@ -125,7 +131,9 @@ class StorageImageAndVideoCollection extends StatelessWidget {
         ),
         onPressed: () async {
           /// When Integrate Functions later, Open Video from phone app write here
-          await SystemFileManagement.openFile(Secure.decode(extractedData));
+          await SystemFileManagement.openFile(extractedData);
+                    // await SystemFileManagement.openFile(Secure.decode(extractedData));
+
         },
       ),
     );
