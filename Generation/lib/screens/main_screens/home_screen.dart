@@ -330,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: _commonChatLayout.particularChatConnection(
                     photo: _connectionData["profilePic"],
                     heading: _connectionData["name"],
-                    subheading: _getSubHeading(
+                    subheading: _lastMsgData == null ? '' : _getSubHeading(
                         _lastMsgData,
                         _connectionData["name"]
                             .toString()
@@ -629,6 +629,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _msgHolder == MessageHolderType.other.toString() ? connFirstName : 'Me';
 
     if (_msgData == '') return '';
+    //  if (_lastMsgData["type"] == '') {
+    //   return '';
+    // }
     // if (Secure.decode(_lastMsgData["type"]) ==
     if (_lastMsgData["type"] ==
         ChatMessageType.image.toString()) {

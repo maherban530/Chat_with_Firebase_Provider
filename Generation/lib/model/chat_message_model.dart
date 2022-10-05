@@ -40,7 +40,7 @@ class ChatMessageModel {
       required String holder,
       required dynamic additionalData}) {
     // dynamic _decodedAdditionalData = Secure.decode(additionalData);
-    dynamic _decodedAdditionalData = additionalData;
+    dynamic _decodedAdditionalData = additionalData ?? '';
     if(_decodedAdditionalData != ''){
       _decodedAdditionalData = DataManagement.fromJsonString(_decodedAdditionalData);
     }

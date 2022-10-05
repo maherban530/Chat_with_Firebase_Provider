@@ -241,10 +241,12 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
 
   _manageIncomingMessages(messages, String incomingPartnerUserId) {
     for (var message in messages) {
-      message = DataManagement.fromJsonString(Secure.decode(message));
+      message = DataManagement.fromJsonString(message);
+            // message = DataManagement.fromJsonString(Secure.decode(message));
       _manageMessageForLocale(message, incomingConnId: incomingPartnerUserId);
       final _msgType =
-          Secure.decode(message.values.toList()[0][MessageData.type]);
+          message.values.toList()[0][MessageData.type];
+                    // Secure.decode(message.values.toList()[0][MessageData.type]);
       if (_msgType != ChatMessageType.text.toString() &&
           _msgType != ChatMessageType.location.toString() &&
           _msgType != ChatMessageType.contact.toString()) {
@@ -255,12 +257,15 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
 
   _downloadMediaContent(message) async {
     final _message = message.values.toList()[0];
-    final _msgData = Secure.decode(_message[MessageData.message]);
-    final _msgType = Secure.decode(_message[MessageData.type]);
+    final _msgData = _message[MessageData.message];
+    final _msgType = _message[MessageData.type];
+    //  final _msgData = Secure.decode(_message[MessageData.message]);
+    // final _msgType = Secure.decode(_message[MessageData.type]);
     final _msgAdditionalData = _message[MessageData.additionalData] == null
         ? {}
         : DataManagement.fromJsonString(
-            Secure.decode(_message[MessageData.additionalData]));
+            _message[MessageData.additionalData]);
+            // Secure.decode(_message[MessageData.additionalData]));
 
     String _mediaStorePath = "";
 
@@ -290,7 +295,8 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
     _dio.download(_msgData, _mediaStorePath).whenComplete(() async {
       debugShow("Media Download Completed");
       message.values.toList()[0][MessageData.message] =
-          Secure.encode(_mediaStorePath);
+          _mediaStorePath;
+          // Secure.encode(_mediaStorePath);
 
       _dbOperations.deleteMediaFromFirebaseStorage(_msgData);
 
@@ -317,7 +323,8 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
       debugShow("Thumbnail Download Completed");
       _msgAdditionalData["thumbnail"] = _thumbnailPath;
       message.values.toList()[0][MessageData.additionalData] =
-          Secure.encode(DataManagement.toJsonString(_msgAdditionalData));
+          DataManagement.toJsonString(_msgAdditionalData);
+          // Secure.encode(DataManagement.toJsonString(_msgAdditionalData));
 
       _dbOperations.deleteMediaFromFirebaseStorage(_remoteThumbnailPath);
 
@@ -567,15 +574,25 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
     /// Local Data Management
     final _msgLocalData = {
       _uniqueMsgId: {
-        MessageData.type: Secure.encode(msgType),
-        MessageData.message: Secure.encode(_localMsgModify),
-        MessageData.time: Secure.encode(_msgTime),
-        MessageData.date: Secure.encode(_msgDate),
+        MessageData.type: msgType,
+        MessageData.message: _localMsgModify,
+        MessageData.time: _msgTime,
+        MessageData.date: _msgDate,
         MessageData.holder:
-            Secure.encode(getMessageHolderForSendMsg(SendMsgStorage.local)),
+            getMessageHolderForSendMsg(SendMsgStorage.local),
         MessageData.additionalData: additionalData != null
-            ? Secure.encode(DataManagement.toJsonString(additionalData))
-            : Secure.encode(additionalData)
+            ? DataManagement.toJsonString(additionalData)
+            : additionalData
+
+        //       MessageData.type: Secure.encode(msgType),
+        // MessageData.message: Secure.encode(_localMsgModify),
+        // MessageData.time: Secure.encode(_msgTime),
+        // MessageData.date: Secure.encode(_msgDate),
+        // MessageData.holder:
+        //     Secure.encode(getMessageHolderForSendMsg(SendMsgStorage.local)),
+        // MessageData.additionalData: additionalData != null
+        //     ? Secure.encode(DataManagement.toJsonString(additionalData))
+        //     : Secure.encode(additionalData)
       }
     };
     _manageMessageForLocale(_msgLocalData,
@@ -671,16 +688,27 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
 
     final _msgRemoteData = {
       uniqueMsgId: {
-        MessageData.type: Secure.encode(msgType),
-        MessageData.message: Secure.encode(_remoteMsg),
-        MessageData.time: Secure.encode(msgTime),
-        MessageData.date: Secure.encode(msgDate),
+        MessageData.type: msgType,
+        MessageData.message: _remoteMsg,
+        MessageData.time: msgTime,
+        MessageData.date: msgDate,
         MessageData.holder:
-            Secure.encode(getMessageHolderForSendMsg(SendMsgStorage.remote)),
+            getMessageHolderForSendMsg(SendMsgStorage.remote),
         MessageData.additionalData: _additionalDataModified != null
-            ? Secure.encode(
-                DataManagement.toJsonString(_additionalDataModified))
-            : Secure.encode(_additionalDataModified)
+            ? 
+                DataManagement.toJsonString(_additionalDataModified)
+            : _additionalDataModified
+
+        //      MessageData.type: Secure.encode(msgType),
+        // MessageData.message: Secure.encode(_remoteMsg),
+        // MessageData.time: Secure.encode(msgTime),
+        // MessageData.date: Secure.encode(msgDate),
+        // MessageData.holder:
+        //     Secure.encode(getMessageHolderForSendMsg(SendMsgStorage.remote)),
+        // MessageData.additionalData: _additionalDataModified != null
+        //     ? Secure.encode(
+        //         DataManagement.toJsonString(_additionalDataModified))
+        //     : Secure.encode(_additionalDataModified)
       }
     };
 
@@ -782,31 +810,32 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
     };
 
     for (final message in _chatMessages) {
-      if (Secure.decode(message['type'].toString()) ==
+            // if (Secure.decode(message['type'].toString()) ==
+      if (message['type'].toString() ==
           ChatMessageType.image.toString()) {
         (_chatHistoryData[ChatMessageType.image] as List<dynamic>).add(message);
-      } else if (Secure.decode(message['type'].toString()) ==
+      } else if (message['type'].toString() ==
           ChatMessageType.video.toString()) {
         (_chatHistoryData[ChatMessageType.video] as List<dynamic>).add(message);
-      } else if (Secure.decode(message['type'].toString()) ==
+      } else if (message['type'].toString() ==
           ChatMessageType.audio.toString()) {
         (_chatHistoryData[ChatMessageType.audio] as List<dynamic>).add(message);
-      } else if (Secure.decode(message['type'].toString()) ==
+      } else if (message['type'].toString() ==
           ChatMessageType.document.toString()) {
         (_chatHistoryData[ChatMessageType.document] as List<dynamic>)
             .add(message);
-      } else if (Secure.decode(message['type'].toString()) ==
+      } else if (message['type'].toString() ==
           ChatMessageType.location.toString()) {
         (_chatHistoryData[ChatMessageType.location] as List<dynamic>)
             .add(message);
-      } else if (Secure.decode(message['type'].toString()) ==
+      } else if (message['type'].toString() ==
           ChatMessageType.contact.toString()) {
         (_chatHistoryData[ChatMessageType.contact] as List<dynamic>)
             .add(message);
       }
 
       (_chatHistoryData[ChatMessageType.text] as List<dynamic>).add(
-          """${Secure.decode(message['holder'].toString()) == MessageHolderType.me.toString() ? 'You' : connName ?? ''}:  ${Secure.decode(message['type'].toString()) == ChatMessageType.text.toString() ? Secure.decode(message['message'].toString()) : '<Non-Text-File>'}\n\n""");
+          """${message['holder'].toString() == MessageHolderType.me.toString() ? 'You' : connName ?? ''}:  ${message['type'].toString() == ChatMessageType.text.toString() ? message['message'].toString() : '<Non-Text-File>'}\n\n""");
     }
 
     return _chatHistoryData;
@@ -818,7 +847,8 @@ class ChatBoxMessagingProvider extends ChangeNotifier {
         Provider.of<ConnectionCollectionProvider>(context, listen: false)
             .getCurrAccData()['name'];
     Map<String, dynamic> _notificationData = {
-      'title': """${Secure.decode(_currUserName)} send you a """,
+            // 'title': """${Secure.decode(_currUserName)} send you a """,
+      'title': """$_currUserName send you a """,
       'body': '',
     };
 

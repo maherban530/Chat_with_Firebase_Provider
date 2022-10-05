@@ -63,7 +63,8 @@ class ChatBoxHeaderSection extends StatelessWidget {
     final _isDarkMode = Provider.of<ThemeProvider>(context).isDarkTheme();
 
     return InkWell(
-      onTap: () => _onImageClicked(Secure.decode(connectionData["profilePic"])),
+            // onTap: () => _onImageClicked(Secure.decode(connectionData["profilePic"])),
+      onTap: () => _onImageClicked(connectionData["profilePic"]),
       child: Container(
         width: 45,
         height: 45,
@@ -74,11 +75,11 @@ class ChatBoxHeaderSection extends StatelessWidget {
                 : AppColors.searchBarBgLightMode.withOpacity(0.5),
             borderRadius: BorderRadius.circular(100),
             border: Border.all(color: AppColors.darkBorderGreenColor, width: 2),
-            image: Secure.decode(connectionData["profilePic"]) == ''
+            image: connectionData["profilePic"] == ''
                 ? null
                 : DecorationImage(
                     image: NetworkImage(
-                        Secure.decode(connectionData["profilePic"])),
+                        connectionData["profilePic"]),
                     fit: BoxFit.cover)),
       ),
     );
@@ -100,7 +101,8 @@ class ChatBoxHeaderSection extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                Secure.decode(connectionData["name"]),
+                                // Secure.decode(connectionData["name"]),
+                connectionData["name"],
                 overflow: TextOverflow.ellipsis,
                 style: TextStyleCollection.headingTextStyle.copyWith(
                     fontSize: 16,

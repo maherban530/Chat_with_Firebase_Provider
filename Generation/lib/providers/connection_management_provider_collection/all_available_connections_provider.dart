@@ -35,7 +35,8 @@ class AllAvailableConnectionsProvider extends ChangeNotifier {
     }
 
     for (final connection in _allAvailableConnections) {
-      if (Secure.decode(connection["name"])
+            // if (Secure.decode(connection["name"])
+      if (connection["name"]
           .toString()
           .toLowerCase()
           .contains(searchKeyword.toString().toLowerCase())) {

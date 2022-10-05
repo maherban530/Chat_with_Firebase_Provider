@@ -753,13 +753,14 @@ class _MessagingSectionState extends State<MessagingSection> {
         final _activityHolder = _replyMsgData["activityHolderId"] ==
                 Provider.of<ChatBoxMessagingProvider>(context)
                     .getPartnerUserId()
-            ? """${Secure.decode(widget.connData['name'])}'s"""
+                                // ? """${Secure.decode(widget.connData['name'])}'s"""
+            ? """${widget.connData['name']}'s"""
             : 'Your';
         return """${_replyMsgData["activityHolderId"] != null ? _activityHolder : ''} activity : click here to view""";
       }
 
       final _replyMsgHolderData = _replyMsgData.values.toList()[0];
-      return """${_replyMsgData['msgHolderId'] == Provider.of<ChatBoxMessagingProvider>(context, listen: false).getPartnerUserId() ? Secure.decode(widget.connData['name']) : 'You'} : ${_optimizedShowReplyMessage(_replyMsgHolderData)}""";
+      return """${_replyMsgData['msgHolderId'] == Provider.of<ChatBoxMessagingProvider>(context, listen: false).getPartnerUserId() ? widget.connData['name'] : 'You'} : ${_optimizedShowReplyMessage(_replyMsgHolderData)}""";
     }
 
     return InkWell(

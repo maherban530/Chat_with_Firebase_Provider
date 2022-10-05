@@ -81,12 +81,13 @@ class _ConnectionProfileScreenState extends State<ConnectionProfileScreen> {
             _commonSection(
                 iconData: Icons.account_circle_outlined,
                 heading: "Name",
-                nameValue: Secure.decode(widget.connData["name"])),
+                                // nameValue: Secure.decode(widget.connData["name"])),
+                nameValue: widget.connData["name"]),
             const SizedBox(height: 30),
             _commonSection(
                 iconData: Icons.info_outlined,
                 heading: "About",
-                nameValue: Secure.decode(widget.connData["about"])),
+                nameValue: widget.connData["about"]),
             // const SizedBox(height: 30),
             // _commonSection(
             //     iconData: Icons.email_outlined,
@@ -177,7 +178,8 @@ class _ConnectionProfileScreenState extends State<ConnectionProfileScreen> {
   _imageSection() {
     final _isDarkMode = Provider.of<ThemeProvider>(context).isDarkTheme();
 
-    final _decodedProfilePic = Secure.decode(widget.connData["profilePic"]);
+    final _decodedProfilePic = widget.connData["profilePic"];
+    // final _decodedProfilePic = Secure.decode(widget.connData["profilePic"]);
 
     return InkWell(
       onTap: () async {
